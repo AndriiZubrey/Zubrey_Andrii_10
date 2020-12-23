@@ -1,0 +1,223 @@
+using System;
+using System.IO;
+using System.Threading;
+using System.Text;
+using static System.Convert;
+
+namespace ConsoleApp11
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Clear();
+            Console.SetWindowSize(65, 33);
+            Console.BufferWidth = 65;
+            Console.BufferHeight = 33;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, 4);
+            Console.WriteLine("Please enter the N (4, 6 or 8)");
+            Console.SetCursorPosition(45, 5);
+            int N = ToInt32(Console.ReadLine());
+            while ((N != 4) && (N != 6) && (N != 8))
+            {
+                Console.Clear();
+                Console.SetCursorPosition(45, 4);
+                Console.WriteLine("Error, wrong number");
+                Console.SetCursorPosition(45, 5);
+                Console.WriteLine("Please enter the N (4, 6 or 8)");
+                Console.SetCursorPosition(45, 6);
+                N = ToInt32(Console.ReadLine());
+            }
+            int i;
+            int j;
+            int u = 0;
+            int[] C = new int [32];
+            int[,] A = new int[N, N];
+            Random a = new Random();
+            Console.WriteLine("");
+            for (i = 0; i < N / 2; i++)
+            {
+                for (j = 0; j < N; j++)
+                {
+                    A[i, j] = a.Next(10, 99);
+                    C[u] = A[i, j];
+                    u = u + 1;
+                }
+            }
+            u = 0;
+            for (j = 0; j < N; j++)
+            {
+                if (j >= N / 2)
+                {
+                    for (i = N / 2; i < N; i++)
+                    {
+                        A[i, j] = C[u];
+                        u = u + 1;
+                    }
+                }
+                else
+                {
+                    for (i = N / 2; i < N; i++)
+                    {
+                        A[i, j] = C[u];
+                        u = u + 1;
+                    }
+                }
+            }
+            for (i = 0; i < N; i++)
+            {
+                Console.SetCursorPosition(48, 7+i);
+                for (j = 0; j < N; j++)
+                {
+                    Console.Write(A[i, j] + "  ");
+                }
+                Console.WriteLine("");
+            }
+            Console.SetCursorPosition(40, 8 + i);
+            Console.WriteLine("You have 60 seconds to memorize the numbers");
+            Console.WriteLine("");
+            for (int k = 60; k >= 0; k--)
+            {
+                Console.Write("\r{0}", k);
+                System.Threading.Thread.Sleep(1000);
+            }
+            Console.Clear();
+            Console.SetCursorPosition(40, 4);
+            Console.WriteLine("Your time is up");
+            string[,] B = new string [N, N];
+            bool f = true;
+            for (i = 0; i < N; i++)
+            {
+                Console.SetCursorPosition(40, 5 + i);
+                for (j = 0; j < N; j++)
+                {
+                    B[i, j] = "X";
+                    Console.Write(B[i, j] + "  ");
+                }
+                Console.WriteLine("");
+            }
+            Console.WriteLine("");
+            int I = 0;
+            int J = 0;
+            int q = 0;
+            int w= 0;
+            int e = 0;
+            int r = 0;
+            int round = 0;
+            int p = 0;
+            int m = 0;
+            int n = 0;
+            while (f == true)
+            {
+                round = round + 1;
+                if (round == 2*N)
+                {
+                    Console.Clear();
+                    Console.SetCursorPosition(40, 7);
+                    Console.WriteLine("Game Over");
+                    break;
+                }
+                Console.SetCursorPosition(40, 5+N);
+                Console.WriteLine("Round " + round);
+                Console.SetCursorPosition(5, 6+N);
+                Console.WriteLine("Now choose a card by typing the column and line it belongs to (e.g. 0;0 -- first card)");
+                string x = Convert.ToString(Console.ReadLine());
+                Console.WriteLine("");
+                string[] X = x.Split(new char[] {';'});
+                while ((Convert.ToInt32(X[0]) >= N) || (Convert.ToInt32(X[1]) >= N))
+                {
+                    n = n + 2;
+                    Console.SetCursorPosition(5, 7 + N + n);
+                    Console.WriteLine("You cannot choose same card twice or type non-existent column/line. Choose a card by typing the column and line it belongs to");
+                    x = Convert.ToString(Console.ReadLine());
+                    Console.WriteLine("");
+                    X = x.Split(new char[] { ';' });
+                }
+                for (i = 0; i < N; i++)
+                {
+                    Console.SetCursorPosition(40, 9 + N + i + n);
+                    for (j = 0; j < N; j++)
+                    {
+                        if ((i == ToInt32(X[0])) && (j == ToInt32(X[1])))
+                        {
+                            B[i, j] = Convert.ToString(A[i, j]);
+                            q = i;
+                            w = j;
+                            I = Convert.ToInt32(B[i, j]);
+                        }
+
+                        Console.Write(B[i, j] + "  ");
+                    }
+
+                    Console.WriteLine("");
+                }
+                Console.SetCursorPosition(5, 10 + 2*N + n);
+                Console.WriteLine("Choose the second card by typing the column and line it belongs to");
+                string y = Convert.ToString(Console.ReadLine());
+                Console.WriteLine("");
+                string[] Y = y.Split(new char[] {';'});
+                while ((X[0] == Y[0]) && (X[1] == Y[1]) || ((Convert.ToInt32(Y[0])>=N)||(Convert.ToInt32(Y[1])>=N)))
+                {
+                    m = m + 2;
+                    Console.SetCursorPosition(5, 12 + 2 * N + m + n);
+                    Console.WriteLine("You cannot choose same card twice or type non-existent column/line. Choose the second card by typing the column and line it belongs to");
+                    y = Convert.ToString(Console.ReadLine());
+                    Console.WriteLine("");
+                    Y = y.Split(new char[] { ';' });
+                }
+                for (i = 0; i < N; i++)
+                {
+                    Console.SetCursorPosition(40, 14 + 2*N + i + m + n);
+                    for (j = 0; j < N; j++)
+                    {
+                        if ((i == ToInt32(Y[0])) && (j == ToInt32(Y[1])))
+                        {
+                            B[i, j] = Convert.ToString(A[i, j]);
+                            e = i;
+                            r = j;
+                            J = Convert.ToInt32(B[i, j]);
+                        }
+                        Console.Write(B[i, j] + "  ");
+                    }
+                    Console.WriteLine("");
+                }
+                System.Threading.Thread.Sleep(5000);
+                if (I != J)
+                {
+                    Console.Clear();
+                    for (i = 0; i < N; i++)
+                    {
+                        Console.SetCursorPosition(40, 4 + i);
+                        for (j = 0; j < N; j++)
+                        {
+                            if (((i == q) && (j == w)) || ((i == e) && (j == r)))
+                            {
+                                B[i, j] = "X";
+                            }
+                            Console.Write(B[i, j] + "  ");
+                        }
+                        Console.WriteLine("");
+                    }
+                    Console.WriteLine("");
+                }
+                for (i = 0; i < N; i++)
+                {
+                    for (j = 0; j < N; j++)
+                    {
+                        if (B[i, j] == "X") p = p +1;
+                    }
+                }
+                if (p == 0)
+                {
+                    Console.Clear();
+                    Console.SetCursorPosition(40, 4);
+                    Console.WriteLine("Congratulations");
+                    Console.SetCursorPosition(40, 5);
+                    Console.WriteLine("You won");
+                }
+            }
+        }
+    }
+}
